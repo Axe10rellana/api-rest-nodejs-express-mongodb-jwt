@@ -2,7 +2,7 @@
   "name": "api-rest",
   "type": "module",
   "version": "0.0.1",
-  "description": "codigo base donde se crea una rest api con nodejs para luego utilizarlas en el FrontEnd en fase de desarrollo.",
+  "description": "codigo base donde se crea una rest api con nodejs para luego utilizarla en el FrontEnd en fase de desarrollo.",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
