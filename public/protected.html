@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="description" content="Curso De Creación De Rest Apis Con Nodejs" />
+  <link rel="icon" href="assets/icons/favicon.png" />
+  <link rel="favicon" href="assets/icons/favicon.png" />
+  <link rel="apple-touch-icon" href="assets/icons/favicon.png" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="styles/index.css" />
+  <script defer src="https://kit.fontawesome.com/a74e3c1ac7.js" crossorigin="anonymous"></script>
+  <title>Ruta Protegida</title>
+</head>
+
+<body>
+  <main class="container mt-3">
+    <h1 class="text-center text-primary">Ruta Protegida</h1>
+    <div>
+      <h2 id="app" class="text-secondary lead">Email: </h2>
+      <button id="logout" class="btn btn-danger">Cerrar Sesion</button>
+    </div>
+  </main>
+  <script>
+    const logout = document.querySelector('#logout');
+    logout.addEventListener('click', async (e) => {
+      const res = await fetch('/api/v1/auth/logout', {
+        method: 'GET',
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', async (e) => {
+      try {
+        const resToken = await fetch('/api/v1/auth/refresh', {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const { token } = await resToken.json();
+
+        const res = await fetch('/api/v1/auth/protected', {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        if (!res.ok) return;
+
+        const data = await res.json();
+
+        if (res.ok) {
+          document.querySelector('#app').textContent = data.email;
+        }
+      } catch (error) {
+        console.error(error.message);
+      }
+    });
+  </script>
+</body>
+
+</html>
